@@ -35,7 +35,7 @@ export class CategoryFormComponent implements OnInit, AfterContentChecked {
   onSubmit() {
     this.submittingForm = true;
 
-    if(this.currentAction == 'new') {
+    if (this.currentAction == 'new') {
       this.createCategory();
     } else { // currentAction == 'edit
       this.updateCategory();
@@ -73,10 +73,10 @@ export class CategoryFormComponent implements OnInit, AfterContentChecked {
   private setPageTitle() {
     if (this.currentAction == 'new')
       this.pageTitle = 'Cadastro de nova categoria'
-      else {
-        const categoryName = this.category.name || ''
-        this.pageTitle = "Editando categoria: " + categoryName; 
-      }
+    else {
+      const categoryName = this.category.name || ''
+      this.pageTitle = "Editando categoria: " + categoryName;
+    }
   }
 
   private createCategory() {
@@ -108,9 +108,9 @@ export class CategoryFormComponent implements OnInit, AfterContentChecked {
     toastr.error('Ocorreu um erro ao processar a sua solicitação!');
     this.submittingForm = false;
 
-    if(error.status === 422)
+    if (error.status === 422)
       this.serverErrorMessages = JSON.parse(error._body).errors;
-      else
+    else
       this.serverErrorMessages = ['Falha na comunicação com o servidor. Por favor, tente mais tarde.']
   }
 }
