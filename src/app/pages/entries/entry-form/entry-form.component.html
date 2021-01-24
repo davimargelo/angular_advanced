@@ -1,7 +1,7 @@
 <nav class="mb-5">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
-        <li class="breadcrumb-item"><a routerLink="/categories">Categorias</a></li>
+        <li class="breadcrumb-item"><a routerLink="/entries">Lançamentos</a></li>
         <li class="breadcrumb-item active-link">{{ pageTitle }}</li>
     </ol>
 </nav>
@@ -17,11 +17,11 @@
     </div>
 </div>
 
-<form [formGroup]="categoryForm" (submit)="onSubmit()" >
+<form [formGroup]="entryForm" (submit)="onSubmit()" >
 
     <div class="card">
         <div class="card-header">
-            Informações sobre a categoria
+            Informações sobre o Lançamento
         </div>
 
         <div class="card-body">
@@ -30,9 +30,9 @@
                     <label for="name">Nome</label>
                     <input type="text" class="form-control" id="name" formControlName="name">
 
-                    <div *ngIf="categoryForm.get('name').invalid && categoryForm.get('name').touched" class="text-danger">
-                        <div *ngIf="categoryForm.get('name').errors.required">Dado obrigatório</div>
-                        <div *ngIf="categoryForm.get('name').errors.minlength">Deve ter no mínimo 2 caracteres</div>
+                    <div *ngIf="entryForm.get('name').invalid && entryForm.get('name').touched" class="text-danger">
+                        <div *ngIf="entryForm.get('name').errors.required">Dado obrigatório</div>
+                        <div *ngIf="entryForm.get('name').errors.minlength">Deve ter no mínimo 2 caracteres</div>
                     </div>
                 </div>
 
@@ -51,6 +51,6 @@
         </ul>
     </div>
 
-    <button [disabled]="submittingForm || categoryForm.invalid" type="submit" class="btn btn-primary btn-lg float-right mt-3">Salvar</button>
+    <button [disabled]="submittingForm || entryForm.invalid" type="submit" class="btn btn-primary btn-lg float-right mt-3">Salvar</button>
 
 </form>
