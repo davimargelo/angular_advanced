@@ -1,8 +1,10 @@
+import { CategoryService } from './../../categories/shared/category.service';
 import { AfterContentChecked, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import toastr from "toastr";
+import { Category } from '../../categories/shared/category.model';
 import { EntryService } from '../shared/entry.service';
 import { Entry } from './../shared/entry.model';
 
@@ -19,13 +21,40 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
   serverErrorMessages: string[] = null;
   submittingForm: boolean = false;
   entry: Entry = new Entry();
+  categories: Category[] = [];
 
-  constructor(private entryService: EntryService, private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder) { }
+  imaskConfig = {
+    mask: Number,
+    scale: 2,
+    thousandsSeparator: '',
+    padFractionalZeros: true,
+    normalizeZeros: true,
+    radix: ','
+  };
+
+  ptBR: any;
+
+  constructor(private entryService: EntryService, private route: ActivatedRoute, private router: Router, private formBuilder: FormBuilder, private categoryService: CategoryService) { }
 
   ngOnInit(): void {
+    this.ptBR = {
+      firstDayOfWeek: 0,
+      dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
+      dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+      dayNamesMin: ['Do', 'Se', 'Te', 'Qu', 'Qu', 'Se', 'Sa'],
+      monthNames: [
+        'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho',
+        'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+      ],
+      monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+      today: 'Hoje',
+      clear: 'Limpar'
+    };
+
     this.setCurrentAction();
     this.buildEntryForm();
     this.loadEntry();
+    this.loadCategories();
   }
 
   ngAfterContentChecked(): void {
@@ -42,7 +71,22 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
     }
   }
 
+  get typeOptions(): Array<any> {
+    return Object.entries(Entry.types).map(([value, text]) => {
+      return {
+        text: text,
+        value: value
+      }
+    })
+  }
+
   // PRIVATE METHODS
+  private loadCategories() {
+    this.categoryService.getAll().subscribe(res => {
+      this.categories = res;
+    })
+  }
+
   private setCurrentAction() {
     if (this.route.snapshot.url[0]?.path == 'new')
       this.currentAction = 'new';
@@ -55,10 +99,10 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
       id: [null],
       name: [null, [Validators.required, Validators.minLength(2)]],
       description: [null],
-      type: [null, [Validators.required]],
+      type: ['expense', [Validators.required]],
       amount: [null, [Validators.required]],
       date: [null, [Validators.required]],
-      paid: [null, [Validators.required]],
+      paid: [true, [Validators.required]],
       categoryId: [null, [Validators.required]]
     });
   }
