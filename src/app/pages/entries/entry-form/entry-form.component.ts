@@ -121,7 +121,7 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
 
   private setPageTitle() {
     if (this.currentAction == 'new')
-      this.pageTitle = 'Cadastro de novO lançamento'
+      this.pageTitle = 'Cadastro de novo lançamento'
     else {
       const entryName = this.entry.name || ''
       this.pageTitle = "Editando lançamento: " + entryName;
@@ -129,7 +129,7 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
   }
 
   private createEntry() {
-    const entry = Object.assign(new Entry(), this.entryForm.value);
+    const entry = Entry.fromJson(this.entryForm.value);
 
     this.entryService.create(entry).subscribe(
       entry => this.actionsForSuccess(entry),
@@ -138,7 +138,7 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
   }
 
   private updateEntry() {
-    const entry = Object.assign(new Entry(), this.entryForm.value);
+    const entry = Entry.fromJson(this.entryForm.value);
 
     this.entryService.update(entry).subscribe(
       entry => this.actionsForSuccess(entry),
