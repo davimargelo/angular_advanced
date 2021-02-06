@@ -1,11 +1,12 @@
-import { AfterContentChecked, OnInit, Injector } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AfterContentChecked, Directive, Injector, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { BaseResourceModel } from 'src/app/shared/models/base-resource.model';
 import toastr from "toastr";
 import { BaseResourceService } from '../../services/base-resource.service';
 
+@Directive()
 export abstract class BaseResourceFormComponent<T extends BaseResourceModel> implements OnInit, AfterContentChecked {
 
     currentAction: string; // "edit" or "new"
@@ -107,9 +108,9 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
         toastr.success("Solicitação processada com sucesso!");
         const baseComponentPath = this.route.snapshot.parent.url[0].path;
         this.router.navigateByUrl(baseComponentPath, { skipLocationChange: true }).then(
-          () => this.router.navigate([baseComponentPath, resource.id, 'edit'])
+            () => this.router.navigate([baseComponentPath, resource.id, 'edit'])
         );
-      }
+    }
 
     protected actionsForError(error) {
         toastr.error('Ocorreu um erro ao processar a sua solicitação!');
