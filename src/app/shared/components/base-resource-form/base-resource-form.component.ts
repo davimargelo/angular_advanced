@@ -49,20 +49,12 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
         }
     }
 
-    // PRIVATE METHODS
+    // protected METHODS
     protected setCurrentAction() {
         if (this.route.snapshot.url[0]?.path == 'new')
             this.currentAction = 'new';
         else
             this.currentAction = 'edit'
-    }
-
-    protected buildResourceForm() {
-        this.resourceForm = this.formBuilder.group({
-            id: [null],
-            name: [null, [Validators.required, Validators.minLength(2)]],
-            description: [null]
-        });
     }
 
     protected loadResource() {
@@ -128,4 +120,6 @@ export abstract class BaseResourceFormComponent<T extends BaseResourceModel> imp
         else
             this.serverErrorMessages = ['Falha na comunicação com o servidor. Por favor, tente mais tarde.']
     }
+
+    protected abstract buildResourceForm(): void;
 }
