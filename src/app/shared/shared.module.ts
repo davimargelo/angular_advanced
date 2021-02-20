@@ -1,3 +1,4 @@
+import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -7,11 +8,13 @@ import { BreadCrumbComponent } from './components/bread-crumb/bread-crumb.compon
   declarations: [BreadCrumbComponent],
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterModule
   ],
   exports: [
     CommonModule,
     ReactiveFormsModule,
+    RouterModule,
     
     BreadCrumbComponent
   ]
